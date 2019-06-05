@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tsnews/models/themes.dart' as Themes;
 
+import 'package:tsnews/screens/login.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
         theme: Themes.MyThemes.lightTheme,
         darkTheme: Themes.MyThemes.darkTheme,
         home: PageBuilder(
-          page: Home(),
+          page: LoginPage(),
         ));
   }
 }

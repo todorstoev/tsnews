@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "308681665487",
+    "firebase_url": "https://tsnews-c3707.firebaseio.com",
+    "project_id": "tsnews-c3707",
+    "storage_bucket": "tsnews-c3707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308681665487:android:74362a7a10a63aab",
+        "android_client_info": {
+          "package_name": "com.example.tsnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308681665487-euobltkouu1ml7ilkbq8ltrlt69e4j0b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCfOIw8DIuxkkn4RbWEpsUgmqAcU2KG5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308681665487-euobltkouu1ml7ilkbq8ltrlt69e4j0b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
