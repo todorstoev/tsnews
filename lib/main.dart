@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.red,
             ),
             debugShowCheckedModeBanner: false,
-            title: 'Veggie Tracker',
+            title: 'TS NEWS',
             home: AdaptiveMainScreen(),
           );
   }
@@ -32,30 +32,13 @@ class AdaptiveMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isIOS) {
-      return CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          items: [
-            BottomNavigationBarItem(
-              title: Text('Log'),
-              icon: Icon(CupertinoIcons.book),
-            ),
-            BottomNavigationBarItem(
-              title: Text('List'),
-              icon: Icon(CupertinoIcons.create),
-            ),
-          ],
-        ),
-        resizeToAvoidBottomInset: false,
-        tabBuilder: (context, index) {
-          return (index == 0)
-              ? CupertinoTabView(builder: (context) => LogScreen())
-              : CupertinoTabView(
-                  builder: (context) => ListScreen(),
-                  defaultTitle: ListScreen.title);
-        },
+      return CupertinoPageScaffold(
+        child: Text('Hello'),
       );
     } else {
-      return CupertinoPageScaffold();
+      return Scaffold(
+        body: Text("Hello"),
+      );
     }
   }
 }
