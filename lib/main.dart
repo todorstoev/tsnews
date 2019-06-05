@@ -1,44 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart' as foundation;
-
-bool get isIOS => foundation.defaultTargetPlatform == TargetPlatform.iOS;
+import 'package:tsnews/models/themes.dart' as Themes;
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final title = "TSNEWS";
   @override
   Widget build(BuildContext context) {
-    return isIOS
-        ? CupertinoApp(
-            debugShowCheckedModeBanner: false,
-            theme: CupertinoThemeData(
-              primaryColor: Color(0xFFFF2D55),
-            ),
-            home: AdaptiveMainScreen(),
-          )
-        : MaterialApp(
-            theme: ThemeData(
-              primarySwatch: Colors.red,
-            ),
-            debugShowCheckedModeBanner: false,
-            title: 'TS NEWS',
-            home: AdaptiveMainScreen(),
-          );
+    return MaterialApp(
+        title: title,
+        theme: Themes.MyThemes.lightTheme,
+        darkTheme: Themes.MyThemes.darkTheme,
+        home: PageBuilder(
+          page: Home(),
+        ));
   }
 }
 
-class AdaptiveMainScreen extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (isIOS) {
-      return CupertinoPageScaffold(
-        child: Text('Hello'),
-      );
-    } else {
-      return Scaffold(
-        body: Text("Hello"),
-      );
-    }
+    return Text('Hello From Home');
+  }
+}
+
+class PageBuilder extends StatelessWidget {
+  final Widget page;
+
+  PageBuilder({Key key, this.page}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: page,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('test'),
+      ),
+    );
   }
 }
