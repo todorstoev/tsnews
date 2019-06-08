@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -7,9 +10,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
-  String _email = "";
-  String _password = "";
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   String _errorMessage = "";
+  final _formKey = GlobalKey<FormState>();
 
   Widget _showCircularProgress() {
     if (_isLoading) {
@@ -39,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
       child: TextFormField(
+        controller: _emailController,
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
@@ -49,11 +54,6 @@ class _LoginPageState extends State<LoginPage> {
               color: Theme.of(context).primaryColor,
             )),
         validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-        onSaved: (value) {
-          setState(() {
-            _email = value;
-          });
-        },
       ),
     );
   }
@@ -62,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
+        controller: _passwordController,
         maxLines: 1,
         obscureText: true,
         autofocus: false,
@@ -72,7 +73,6 @@ class _LoginPageState extends State<LoginPage> {
               color: Theme.of(context).primaryColor,
             )),
         validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-        onSaved: (value) => _password = value,
       ),
     );
   }
@@ -80,14 +80,17 @@ class _LoginPageState extends State<LoginPage> {
   Widget _showPrimaryButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-        child: new MaterialButton(
+        child: MaterialButton(
           elevation: 5.0,
           minWidth: 200.0,
           height: 42.0,
-          color: Colors.blue,
+          color: Theme.of(context).primaryColor,
           child: Text('Login',
-              style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-          onPressed: () {},
+              style: new TextStyle(
+                fontSize: 20.0,
+                color: Theme.of(context).accentColor,
+              )),
+          onPressed: _validateAndSubmit,
         ));
   }
 
@@ -111,17 +114,56 @@ class _LoginPageState extends State<LoginPage> {
   Widget _showBody() {
     return Container(
       padding: EdgeInsets.all(16.0),
-      child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          _showLogo(),
-          _showEmailInput(),
-          _showPasswordInput(),
-          _showPrimaryButton(),
-          _showErrorMessage(),
-        ],
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            _showLogo(),
+            _showEmailInput(),
+            _showPasswordInput(),
+            _showPrimaryButton(),
+            _showErrorMessage(),
+          ],
+        ),
       ),
     );
+  }
+
+  void _validateAndSubmit() async {
+    _errorMessage = "";
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      _signInWithEmailAndPassword();
+    }
+  }
+
+  void _signInWithEmailAndPassword() async {
+    try {
+      final FirebaseUser user = await _auth.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+
+      if (user != null) {
+        print(user);
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = e.message;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override

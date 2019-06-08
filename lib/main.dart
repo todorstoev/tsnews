@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:tsnews/models/themes.dart' as Themes;
 
-import 'package:tsnews/screens/login.dart';
+// import 'package:tsnews/screens/login.dart';
+import 'package:tsnews/screens/home.dart';
 
 void main() => runApp(MyApp());
 typedef void VoidCallback();
@@ -25,34 +27,24 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: title,
+        debugShowCheckedModeBanner: false,
         theme: isLight ? Themes.MyThemes.lightTheme : Themes.MyThemes.darkTheme,
         darkTheme: Themes.MyThemes.darkTheme,
         home: PageBuilder(
-          page: Home(this.changeTheme),
+          page: Home(),
+          changeTheme: changeTheme,
+          title: title,
         ));
-  }
-}
-
-class Home extends StatelessWidget {
-  final VoidCallback changeTheme;
-
-  Home(this.changeTheme);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      child: Text('Change Theme'),
-      onPressed: () {
-        this.changeTheme();
-      },
-    );
   }
 }
 
 class PageBuilder extends StatelessWidget {
   final Widget page;
+  final VoidCallback changeTheme;
+  final String title;
 
-  PageBuilder({Key key, this.page}) : super(key: key);
+  PageBuilder({Key key, this.page, this.changeTheme, this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +52,16 @@ class PageBuilder extends StatelessWidget {
       body: page,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('test'),
+        title: Text(
+          title,
+          style: TextStyle(),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.loop),
+            onPressed: changeTheme,
+          )
+        ],
       ),
     );
   }
