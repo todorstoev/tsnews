@@ -150,6 +150,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _isLoading = false;
         });
+        Navigator.pushNamed(context, '/news');
       }
     } catch (e) {
       setState(() {
@@ -168,8 +169,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[_showBody(), _showCircularProgress()],
+    return Scaffold(
+
+      body: Stack(
+        children: <Widget>[_showBody(), _showCircularProgress()],
+      ),
     );
   }
 }

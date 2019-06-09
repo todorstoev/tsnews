@@ -118,18 +118,20 @@ class _HomeState extends State<Home> {
   }
 
   Widget build(BuildContext context) {
-    return ListView(
-      children: _topNews
-          .map((i) => FutureBuilder<News>(
-              future: _getNews(i),
-              builder: (BuildContext context, AsyncSnapshot<News> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return _buildItem(snapshot.data);
-                } else {
-                  return Text('...');
-                }
-              }))
-          .toList(),
+    return Scaffold(
+      body: ListView(
+        children: _topNews
+            .map((i) => FutureBuilder<News>(
+                future: _getNews(i),
+                builder: (BuildContext context, AsyncSnapshot<News> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return _buildItem(snapshot.data);
+                  } else {
+                    return Text('...');
+                  }
+                }))
+            .toList(),
+      ),
     );
   }
 }
