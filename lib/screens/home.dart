@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 import "package:tsnews/models/news.dart";
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -93,6 +95,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildItem(News news) {
+    var user = Provider.of<FirebaseUser>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ExpansionTile(
