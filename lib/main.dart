@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tsnews/models/themes.dart' as Themes;
-
+import 'package:provider/provider.dart';
 import 'package:tsnews/screens/login.dart';
 import 'package:tsnews/screens/home.dart';
 
@@ -24,27 +25,35 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: title,
-      debugShowCheckedModeBanner: false,
-      theme: isLight ? Themes.MyThemes.lightTheme : Themes.MyThemes.darkTheme,
-      darkTheme: Themes.MyThemes.darkTheme,
-      initialRoute: '/',
-      routes: {
-        // When we navigate to the "/" route, build the FirstScreen Widget
-        '/news': (context) => PageBuilder(
-              changeTheme: changeTheme,
-              page: Home(),
-              title: "",
-            ),
-        // When we navigate to the "/second" route, build the SecondScreen Widget
-        '/': (context) => PageBuilder(
-              changeTheme: changeTheme,
-              page: LoginPage(),
-              title: "",
-            ),
-      },
-    );
+    return MultiProvider(
+        providers: [
+          /// Make user stream available
+          StreamProvider<FirebaseUser>.value(
+            stream: FirebaseAuth.instance.onAuthStateChanged,
+          ),
+        ],
+        child: MaterialApp(
+          title: title,
+          debugShowCheckedModeBanner: false,
+          theme:
+              isLight ? Themes.MyThemes.lightTheme : Themes.MyThemes.darkTheme,
+          darkTheme: Themes.MyThemes.darkTheme,
+          initialRoute: '/',
+          routes: {
+            // When we navigate to the "/" route, build the FirstScreen Widget
+            '/news': (context) => PageBuilder(
+                  changeTheme: changeTheme,
+                  page: Home(),
+                  title: "",
+                ),
+            // When we navigate to the "/second" route, build the SecondScreen Widget
+            '/': (context) => PageBuilder(
+                  changeTheme: changeTheme,
+                  page: LoginPage(),
+                  title: "",
+                ),
+          },
+        ));
   }
 }
 

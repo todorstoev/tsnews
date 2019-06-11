@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -169,11 +170,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var user = Provider.of<FirebaseUser>(context);
 
-      body: Stack(
-        children: <Widget>[_showBody(), _showCircularProgress()],
-      ),
+    return Stack(
+      children: <Widget>[
+        _showBody(),
+        _showCircularProgress(),
+        Text(user.email)
+      ],
     );
   }
 }
