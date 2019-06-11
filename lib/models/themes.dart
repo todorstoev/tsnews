@@ -3,10 +3,24 @@ import 'package:flutter/material.dart';
 class MyThemes {
   static final ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
-      fontFamily: 'Montserrat',
-      accentColor: Colors.white);
+      fontFamily: 'Plaster',
+      primaryColor: Color(0xFF2196f3),
+      primaryColorDark: Color(0xFF0069c0),
+      primaryColorLight: Color(0xFF6ec6ff),
+      accentColor: Colors.white,
+      iconTheme: IconThemeData(
+          color: Color(0xFF6ec6ff)
+      )
+  );
+
   static final ThemeData darkTheme = ThemeData(
       brightness: Brightness.dark,
-      accentColor: Color.fromRGBO(91, 199, 248, 1),
+      primaryColor: Color(0xFF9c27b0),
+      primaryColorDark: Color(0xFF6a0080),
+      primaryColorLight: Color(0xFFd05ce3),
+      accentColor: Colors.white,
+      iconTheme: IconThemeData(
+          color: Color(0xFFd05ce3)
+      ),
       fontFamily: 'Montserrat');
 }
