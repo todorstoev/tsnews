@@ -114,7 +114,8 @@ class _PageBuilderState extends State<PageBuilder> {
                       margin: EdgeInsets.only(left: 20.0),
                       child: Text(
                         'Calculator',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20, fontFamily: 'Montserrat')
+                        ,
                       ))
                 ],
               ),

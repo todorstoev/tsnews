@@ -9,7 +9,7 @@ class MyThemes {
 
   static final ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
-      fontFamily: 'Plaster',
+      fontFamily: 'Montserrat',
       primaryColor: Color(0xFF2196f3),
       primaryColorDark: Color(0xFF0069c0),
       primaryColorLight: Color(0xFF6ec6ff),
