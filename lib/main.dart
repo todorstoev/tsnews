@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tsnews/models/themes.dart' as Themes;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:provider/provider.dart';
 import 'package:tsnews/screens/login.dart';
 import 'package:tsnews/screens/home.dart';
 
 void main() => runApp(MyApp());
-
 typedef void VoidCallback();
 
 class MyApp extends StatefulWidget {
@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final title = "Branding and themes";
+  final title = "TSNEWS";
   bool isLight = true;
 
   void changeTheme() {
@@ -26,27 +26,35 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: title,
-      debugShowCheckedModeBanner: false,
-      theme: isLight ? Themes.MyThemes.lightTheme : Themes.MyThemes.darkTheme,
-      darkTheme: Themes.MyThemes.darkTheme,
-      initialRoute: '/',
-      routes: {
-        // When we navigate to the "/" route, build the FirstScreen Widget
-        '/news': (context) => PageBuilder(
-              changeTheme: changeTheme,
-              page: Home(),
-              title: "",
-            ),
-        // When we navigate to the "/second" route, build the SecondScreen Widget
-        '/': (context) => PageBuilder(
-              changeTheme: changeTheme,
-              page: LoginPage(),
-              title: "",
-            ),
-      },
-    );
+    return MultiProvider(
+        providers: [
+          /// Make user stream available
+          StreamProvider<FirebaseUser>.value(
+            stream: FirebaseAuth.instance.onAuthStateChanged,
+          ),
+        ],
+        child: MaterialApp(
+          title: title,
+          debugShowCheckedModeBanner: false,
+          theme:
+              isLight ? Themes.MyThemes.lightTheme : Themes.MyThemes.darkTheme,
+          darkTheme: Themes.MyThemes.darkTheme,
+          initialRoute: '/',
+          routes: {
+            // When we navigate to the "/" route, build the FirstScreen Widget
+            '/news': (context) => PageBuilder(
+                  changeTheme: changeTheme,
+                  page: Home(),
+                  title: "",
+                ),
+            // When we navigate to the "/second" route, build the SecondScreen Widget
+            '/': (context) => PageBuilder(
+                  changeTheme: changeTheme,
+                  page: LoginPage(),
+                  title: "",
+                ),
+          },
+        ));
   }
 }
 
@@ -64,7 +72,6 @@ class PageBuilder extends StatefulWidget {
 
 class _PageBuilderState extends State<PageBuilder> {
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
