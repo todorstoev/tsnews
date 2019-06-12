@@ -2,28 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tsnews/models/themes.dart' as Themes;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:tsnews/screens/login.dart';
 import 'package:tsnews/screens/home.dart';
 
 void main() => runApp(MyApp());
-typedef void VoidCallback();
 
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   final title = "TSNEWS";
-  bool isLight = true;
-
-  void changeTheme() {
-    setState(() {
-      isLight = !this.isLight;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -33,26 +20,31 @@ class _MyAppState extends State<MyApp> {
             stream: FirebaseAuth.instance.onAuthStateChanged,
           ),
         ],
-        child: MaterialApp(
-          title: title,
-          debugShowCheckedModeBanner: false,
-          theme:
-              isLight ? Themes.MyThemes.lightTheme : Themes.MyThemes.darkTheme,
-          darkTheme: Themes.MyThemes.darkTheme,
-          initialRoute: '/',
-          routes: {
-            // When we navigate to the "/" route, build the FirstScreen Widget
-            '/news': (context) => PageBuilder(
-                  changeTheme: changeTheme,
-                  page: Home(),
-                  title: "",
-                ),
-            // When we navigate to the "/second" route, build the SecondScreen Widget
-            '/': (context) => PageBuilder(
-                  changeTheme: changeTheme,
-                  page: LoginPage(),
-                  title: "",
-                ),
+        child: DynamicTheme(
+          defaultBrightness: Brightness.light,
+          data: (brightness) => ThemeData(
+                primarySwatch: Colors.indigo,
+                brightness: brightness,
+              ),
+          themedWidgetBuilder: (context, theme) {
+            return MaterialApp(
+              title: title,
+              debugShowCheckedModeBanner: false,
+              theme: theme,
+              initialRoute: '/',
+              routes: {
+                // When we navigate to the "/" route, build the FirstScreen Widget
+                '/news': (context) => PageBuilder(
+                      page: Home(),
+                      title: "",
+                    ),
+                // When we navigate to the "/second" route, build the SecondScreen Widget
+                '/': (context) => PageBuilder(
+                      page: LoginPage(),
+                      title: "",
+                    ),
+              },
+            );
           },
         ));
   }
@@ -60,11 +52,9 @@ class _MyAppState extends State<MyApp> {
 
 class PageBuilder extends StatefulWidget {
   final Widget page;
-  final VoidCallback changeTheme;
   final String title;
 
-  PageBuilder({Key key, this.page, this.changeTheme, this.title})
-      : super(key: key);
+  PageBuilder({Key key, this.page, this.title}) : super(key: key);
 
   @override
   _PageBuilderState createState() => _PageBuilderState();
@@ -83,8 +73,10 @@ class _PageBuilderState extends State<PageBuilder> {
             Container(
               height: 90.0,
               child: DrawerHeader(
-
-                child: Text('COMPANY LOGO', style: TextStyle(fontFamily: 'Plaster'),),
+                child: Text(
+                  'COMPANY LOGO',
+                  style: TextStyle(fontFamily: 'Plaster'),
+                ),
                 margin: EdgeInsets.all(0.0),
                 padding: EdgeInsets.all(0.0),
 
@@ -114,8 +106,8 @@ class _PageBuilderState extends State<PageBuilder> {
                       margin: EdgeInsets.only(left: 20.0),
                       child: Text(
                         'Calculator',
-                        style: TextStyle(fontSize: 20, fontFamily: 'Montserrat')
-                        ,
+                        style:
+                            TextStyle(fontSize: 20, fontFamily: 'Montserrat'),
                       ))
                 ],
               ),
@@ -229,22 +221,37 @@ class _PageBuilderState extends State<PageBuilder> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 FloatingActionButton(
-                  onPressed: widget.changeTheme,
-                  child: Icon(Icons.color_lens),
-                  backgroundColor: Colors.white,
-                  foregroundColor: Color(0xFF0085c1),
-                  mini: true
-                ),
+                    onPressed: () {
+                      DynamicTheme.of(context).setBrightness(Brightness.light);
+                    },
+                    child: Icon(Icons.color_lens),
+                    backgroundColor: Colors.white,
+                    foregroundColor: Color(0xFF0085c1),
+                    mini: true),
                 FloatingActionButton(
-                  onPressed: widget.changeTheme,
+                  onPressed: () {
+                    DynamicTheme.of(context).setBrightness(Brightness.dark);
+                  },
                   child: Icon(Icons.color_lens),
                   backgroundColor: Colors.black87,
                   foregroundColor: Color(0xFF9c27b0),
                   mini: true,
                   tooltip: 'Dark theme',
-
                 ),
-
+                FloatingActionButton(
+                  onPressed: () {
+                    DynamicTheme.of(context).setThemeData(
+                      ThemeData(
+                          primaryColor: Colors.redAccent,
+                          brightness: Theme.of(context).brightness),
+                    );
+                  },
+                  child: Icon(Icons.color_lens),
+                  backgroundColor: Colors.white70,
+                  foregroundColor: Colors.redAccent,
+                  mini: true,
+                  tooltip: 'Dark theme',
+                ),
               ],
             ),
 //            Container(
