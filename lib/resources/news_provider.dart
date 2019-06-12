@@ -37,9 +37,16 @@ class NewsProvider {
     }
   }
 
-  <Future<News> fetchAllNews() async {
+  Future<List<News>> fetchAllNews() async {
     final news = _topNews.map((id) => _getNews(id));
+    final articles = await Future.wait(news);
 
-    return news;
+    return articles;
   }
+
+
+
+  
+
+
 }
