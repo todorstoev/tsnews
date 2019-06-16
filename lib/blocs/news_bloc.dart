@@ -1,21 +1,22 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:tsnews/resources/news_provider.dart';
 import 'package:tsnews/models/news.dart';
+import 'dart:collection';
 
 class NewsBloc {
   final NewsProvider newsProvider = NewsProvider();
 
-  final _newsFetcher = BehaviorSubject<List<News>>();
+  final _newsFetcher = BehaviorSubject<UnmodifiableListView<News>>();
 
   NewsBloc() {
-    this.fetchAllNews();
+    _fetchAllNews();
   }
 
-  Observable<List<News>> get allNews => _newsFetcher.stream;
+  Observable<UnmodifiableListView<News>> get allNews => _newsFetcher.stream;
 
-  fetchAllNews() async {
+  _fetchAllNews() async {
     List<News> news = await newsProvider.fetchAllNews();
-    _newsFetcher.sink.add(news);
+    _newsFetcher.sink.add(UnmodifiableListView(news));
   }
 
   dispose() {

@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:tsnews/models/news.dart";
 import 'package:url_launcher/url_launcher.dart';
 import 'package:tsnews/blocs/news_bloc.dart';
+import 'dart:collection';
 
 class Home extends StatefulWidget {
   @override
@@ -37,8 +38,9 @@ class _HomeState extends State<Home> {
   }
 
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<UnmodifiableListView<News>>(
       stream: bloc.allNews,
+      initialData: UnmodifiableListView<News>([]),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           return ListView(
