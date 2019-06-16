@@ -43,10 +43,4 @@ class NewsProvider {
 
     return articles;
   }
-
-
-
-  
-
-
 }

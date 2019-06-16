@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tsnews/models/themes.dart' as Themes;
+// import 'package:tsnews/models/themes.dart' as Themes;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:provider/provider.dart';
